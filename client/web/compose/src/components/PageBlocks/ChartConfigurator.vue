@@ -9,6 +9,13 @@
         text-field="name"
         value-field="chartID"
       />
+
+      <b-form-checkbox
+        v-model="block.options.enableAnimation"
+        class="pt-3"
+      >
+        {{ $t('chart.enableAnimation') }}
+      </b-form-checkbox>
     </b-form-group>
 
     <b-button

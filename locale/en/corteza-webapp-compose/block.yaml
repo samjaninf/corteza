@@ -99,6 +99,7 @@ chart:
     chartId: Chart preview (ID {{0}})
   searchPlaceholder: Type here to search all charts in this namespace
   openInBuilder: Open in chart builder
+  enableAnimation: Enable chart animation
 content:
   ok: Ok
   label: Content

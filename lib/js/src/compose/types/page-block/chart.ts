@@ -8,6 +8,7 @@ interface Options {
   refreshRate: number;
   refreshEnabled: boolean;
   magnifyOption: string;
+  enableAnimation: boolean,
 }
 
 const defaults: Readonly<Options> = Object.freeze({
@@ -15,6 +16,7 @@ const defaults: Readonly<Options> = Object.freeze({
   refreshRate: 0,
   magnifyOption: '',
   refreshEnabled: false,
+  enableAnimation: false,
 })
 
 export class PageBlockChart extends PageBlock {
@@ -29,10 +31,9 @@ export class PageBlockChart extends PageBlock {
 
   applyOptions (o?: Partial<Options>): void {
     if (!o) return
-
     Apply(this.options, o, CortezaID, 'chartID')
     Apply(this.options, o, Number, 'refreshRate')
-    Apply(this.options, o, Boolean, 'refreshEnabled')
+    Apply(this.options, o, Boolean, 'refreshEnabled', 'enableAnimation')
     Apply(this.options, o, String, 'magnifyOption')
   }
 }
