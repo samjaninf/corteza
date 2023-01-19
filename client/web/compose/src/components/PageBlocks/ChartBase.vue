@@ -2,7 +2,7 @@
   <wrap
     v-bind="$props"
     v-on="$listeners"
-    @refreshBlock="refresh"
+    @refreshBlock = manualRefresh
   >
     <chart-component
       v-if="chart"
@@ -83,6 +83,11 @@ export default {
 
     refresh () {
       this.fetchChart({ force: true })
+    },
+
+    manualRefresh () {
+      this.refresh()
+      this.key++
     },
   },
 

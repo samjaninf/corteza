@@ -94,6 +94,7 @@ export default class Chart extends BaseChart {
     const { reports = [], colorScheme } = this.config
 
     const options: any = {
+      animation: false,
       series: [],
       xAxis: [],
       yAxis: [],
