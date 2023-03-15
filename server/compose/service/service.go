@@ -68,6 +68,7 @@ var (
 	DefaultModule              ModuleService
 	DefaultChart               *chart
 	DefaultPage                *page
+	DefaultPageLayout          *pageLayout
 	DefaultAttachment          AttachmentService
 	DefaultNotification        *notification
 	DefaultResourceTranslation ResourceTranslationsManagerService
@@ -181,6 +182,7 @@ func Initialize(ctx context.Context, log *zap.Logger, s store.Storer, c Config) 
 	DefaultImportSession = ImportSession()
 	DefaultRecord = Record()
 	DefaultPage = Page()
+	DefaultPageLayout = PageLayout()
 	DefaultChart = Chart()
 	DefaultNotification = Notification(c.UserFinder)
 	DefaultAttachment = Attachment(DefaultObjectStore, dal.Service())
