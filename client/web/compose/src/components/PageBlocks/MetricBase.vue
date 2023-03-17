@@ -28,6 +28,7 @@
           <metric-item
             :metric="m"
             :value="v"
+            :is-card="isCard"
           />
         </div>
       </div>
@@ -87,6 +88,12 @@ export default {
 
   created () {
     this.refreshBlock(this.refresh)
+  },
+
+  computed: {
+    isCard () {
+      return this.block.style.wrap.kind === 'plain'
+    }
   },
 
   methods: {
