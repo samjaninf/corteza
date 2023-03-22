@@ -112,6 +112,7 @@ export default {
     ...mapActions({
       createPage: 'page/create',
       updatePage: 'page/update',
+      createPageLayout: 'pageLayout/create',
     }),
 
     handleRecordPageCreation () {
@@ -124,16 +125,18 @@ export default {
       const blocks = [new compose.PageBlockRecord({ xywh: [0, 0, 12, 16] })]
       const selfID = (this.recordListPage || {}).pageID || NoID
 
-      const page = {
+      const page = new compose.Page({
         namespaceID,
         moduleID,
         selfID,
         title: `${this.$t('forModule.recordPage')} "${name || moduleID}"`,
         blocks,
-      }
+      })
 
-      this.createPage(page)
-        .catch(this.toastErrorHandler(this.$t('notification:module.recordPage.createFailed')))
+      this.createPage(page).then(({ pageID }) => {
+        const pageLayout = new compose.PageLayout({ namespaceID, pageID })
+        return this.createPageLayout(pageLayout)
+      }).catch(this.toastErrorHandler(this.$t('notification:module.recordPage.createFailed')))
         .finally(() => {
           this.processing = false
         })
@@ -156,15 +159,18 @@ export default {
         },
       })]
 
-      const page = {
+      const page = new compose.Page({
         title: `${this.$t('forModule.recordList')} "${name || moduleID}"`,
         namespaceID,
         blocks,
-      }
+      })
 
       this.createPage(page)
         .then(({ pageID: selfID = NoID }) => {
-          return this.updatePage({ ...this.recordPage, selfID })
+          return this.updatePage({ ...this.recordPage, selfID }).then(({ pageID }) => {
+            const pageLayout = new compose.PageLayout({ namespaceID, pageID })
+            return this.createPageLayout(pageLayout)
+          })
         })
         .catch(this.toastErrorHandler(this.$t('notification:module.recordPage.createFailed')))
         .finally(() => {
