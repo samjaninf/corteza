@@ -44,7 +44,7 @@
         <b-select
           v-model="value.kind"
           :disabled="disabled"
-          @change="$emit('updateKind', value)"
+          @change="$emit('updateKind')"
         >
           <option
             v-for="({ kind, label }) in fieldKinds"

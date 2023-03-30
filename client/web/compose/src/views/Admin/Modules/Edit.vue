@@ -301,7 +301,7 @@
                           :is-duplicate="!!duplicateFields[index]"
                           @edit="handleFieldEdit(module.fields[index])"
                           @delete="module.fields.splice(index, 1)"
-                          @updateKind="handleFieldKind(module.fields[index])"
+                          @updateKind="handleFieldKindUpdate(index)"
                         />
                       </draggable>
 
@@ -713,8 +713,9 @@ export default {
       this.updateField = compose.ModuleFieldMaker({ ...field })
     },
 
-    handleFieldKind (field) {
-      this.handleFieldSave(compose.ModuleFieldMaker({ ...field }))
+    handleFieldKindUpdate (index) {
+      const field = this.module.fields[index]
+      this.module.fields.splice(index, 1, compose.ModuleFieldMaker({ ...field }))
     },
 
     handleFieldSave (field) {
