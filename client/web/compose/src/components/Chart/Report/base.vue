@@ -1,5 +1,11 @@
 <script>
+import { components } from '@cortezaproject/corteza-vue'
+const { CInputCheckbox } = components
 export default {
+  components: {
+    CInputCheckbox,
+  },
+
   props: {
     report: {
       type: Object,
@@ -43,6 +49,15 @@ export default {
       required: false,
       default: false,
     },
+  },
+
+  data () {
+    return {
+      checkboxLabel: {
+        on: this.$t('general:label.yes'),
+        off: this.$t('general:label.no'),
+      },
+    }
   },
 
   computed: {

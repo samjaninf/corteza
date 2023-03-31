@@ -36,91 +36,115 @@
             </b-card-header>
             <b-container
               fluid
-              class="px-4 py-3"
+              class="p-0"
             >
               <b-row>
                 <b-col
                   md="6"
                   sm="12"
                 >
-                  <div v-if="modules">
-                    <b-form-group
-                      :label="$t('name')"
+                  <div
+                    class="pt-3 px-3"
+                  >
+                    <h5 class="pt-3">
+                      General Settings
+                    </h5>
+                    <b-row
+                      v-if="modules"
                     >
-                      <b-form-input
-                        v-model="chart.name"
-                        :state="nameState"
-                      />
-                    </b-form-group>
-
-                    <b-form-group
-                      :label="$t('handle')"
-                    >
-                      <b-form-input
-                        v-model="chart.handle"
-                        :placeholder="$t('general.placeholder.handle')"
-                        :state="handleState"
-                        class="mb-1"
-                      />
-                      <b-form-invalid-feedback :state="handleState">
-                        {{ $t('general.placeholder.invalid-handle-characters') }}
-                      </b-form-invalid-feedback>
-                    </b-form-group>
-
-                    <b-form-group
-                      :label="$t('colorScheme.label')"
-                    >
-                      <vue-select
-                        v-model="chart.config.colorScheme"
-                        :options="colorSchemes"
-                        :reduce="cs => cs.value"
-                        label="label"
-                        option-text="label"
-                        option-value="value"
-                        :placeholder="$t('colorScheme.placeholder')"
-                        :clearable="true"
-                        :calculate-position="calculateDropdownPosition"
-                        class="bg-white h-100 w-100"
+                      <b-col
+                        cols="12"
+                        md="6"
                       >
-                        <template #option="option">
-                          <p
-                            class="mb-1"
-                          >
-                            {{ option.label }}
-                          </p>
-                          <div
-                            v-for="(color, index) in option.colors"
-                            :key="`${option.value}-${index}`"
-                            :style="`background: ${color};`"
-                            class="d-inline-block color-box mr-1 mb-1"
+                        <b-form-group
+                          :label="$t('name')"
+                        >
+                          <b-form-input
+                            v-model="chart.name"
+                            :state="nameState"
                           />
-                        </template>
-                      </vue-select>
-                      <template
-                        v-if="currentColorScheme"
+                        </b-form-group>
+                      </b-col>
+                      <b-col
+                        cols="12"
+                        md="6"
                       >
-                        <div
-                          v-for="(color, index) in currentColorScheme.colors"
-                          :key="`${currentColorScheme.value}-${index}`"
-                          :style="`background: ${color};`"
-                          class="d-inline-block color-box mr-1"
-                        />
-                      </template>
-                    </b-form-group>
-
-                    <b-form-group>
-                      <b-form-checkbox
-                        v-model="chart.config.noAnimation"
-                        :value="false"
-                        :unchecked-value="true"
-                        switch
+                        <b-form-group
+                          :label="$t('handle')"
+                        >
+                          <b-form-input
+                            v-model="chart.handle"
+                            :placeholder="$t('general.placeholder.handle')"
+                            :state="handleState"
+                            class="mb-1"
+                          />
+                          <b-form-invalid-feedback :state="handleState">
+                            {{ $t('general.placeholder.invalid-handle-characters') }}
+                          </b-form-invalid-feedback>
+                        </b-form-group>
+                      </b-col>
+                      <b-col
+                        cols="12"
                       >
-                        {{ $t('edit.animation.enabled') }}
-                      </b-form-checkbox>
-                    </b-form-group>
-
-                    <hr>
+                        <b-form-group
+                          :label="$t('colorScheme.label')"
+                        >
+                          <vue-select
+                            v-model="chart.config.colorScheme"
+                            :options="colorSchemes"
+                            :reduce="cs => cs.value"
+                            label="label"
+                            option-text="label"
+                            option-value="value"
+                            :placeholder="$t('colorScheme.placeholder')"
+                            :clearable="true"
+                            :calculate-position="calculateDropdownPosition"
+                            class="bg-white h-100 w-100"
+                          >
+                            <template #option="option">
+                              <p
+                                class="mb-1"
+                              >
+                                {{ option.label }}
+                              </p>
+                              <div
+                                v-for="(color, index) in option.colors"
+                                :key="`${option.value}-${index}`"
+                                :style="`background: ${color};`"
+                                class="d-inline-block color-box mr-1 mb-1"
+                              />
+                            </template>
+                          </vue-select>
+                          <template
+                            v-if="currentColorScheme"
+                          >
+                            <div
+                              v-for="(color, index) in currentColorScheme.colors"
+                              :key="`${currentColorScheme.value}-${index}`"
+                              :style="`background: ${color};`"
+                              class="d-inline-block color-box mr-1"
+                            />
+                          </template>
+                        </b-form-group>
+                      </b-col>
+                      <b-col
+                        cols="12"
+                        md="6"
+                      >
+                        <b-form-group
+                          :label="$t('edit.animation.enabled')"
+                          class="text-primary"
+                        >
+                          <c-input-checkbox
+                            v-model="chart.config.noAnimation"
+                            :labels="checkboxLabel"
+                            switch
+                          />
+                        </b-form-group>
+                      </b-col>
+                    </b-row>
                   </div>
+                  <hr v-if="modules">
 
                   <!-- Some charts support multiple reports -->
                   <fieldset
@@ -168,7 +192,7 @@
                     </b-form-group>
                   </fieldset>
 
-                  <!-- Generic report editing component -->
+                  <!-- General report editing component -->
                   <component
                     :is="reportEditor"
                     v-if="editReport"
@@ -188,16 +212,19 @@
                     class="d-flex flex-column position-sticky"
                     style="top: 0;"
                   >
-                    <b-button
-                      :disabled="processing || !reportsValid"
-                      variant="outline-primary"
-                      @click.prevent="update"
-                    >
-                      {{ $t('edit.loadData') }}
-                    </b-button>
+                    <div class="d-flex justify-content-center">
+                      <b-button
+                        :disabled="processing || !reportsValid"
+                        variant="primary"
+                        class="mt-3 w-50"
+                        @click.prevent="update"
+                      >
+                        {{ $t('edit.loadData') }}
+                      </b-button>
+                    </div>
 
                     <div
-                      class="chart-preview mt-5"
+                      class="chart-preview mt-3"
                     >
                       <chart-component
                         ref="chart"
@@ -237,7 +264,7 @@ import EditorToolbar from 'corteza-webapp-compose/src/components/Admin/EditorToo
 import { compose, NoID, shared } from '@cortezaproject/corteza-js'
 import Export from 'corteza-webapp-compose/src/components/Admin/Export'
 import ChartComponent from 'corteza-webapp-compose/src/components/Chart'
-import { handle } from '@cortezaproject/corteza-vue'
+import { handle, components } from '@cortezaproject/corteza-vue'
 import draggable from 'vuedraggable'
 import ReportItem from 'corteza-webapp-compose/src/components/Chart/ReportItem'
 import Reports from 'corteza-webapp-compose/src/components/Chart/Report'
@@ -245,6 +272,7 @@ import { chartConstructor } from 'corteza-webapp-compose/src/lib/charts'
 import VueSelect from 'vue-select'
 import { evaluatePrefilter } from 'corteza-webapp-compose/src/lib/record-filter'
 import { debounce } from 'lodash'
+const { CInputCheckbox } = components
 const { colorschemes } = shared
 
 const defaultReport = {
@@ -265,6 +293,7 @@ export default {
     draggable,
     ReportItem,
     VueSelect,
+    CInputCheckbox,
   },
 
   props: {
@@ -292,6 +321,10 @@ export default {
       processing: false,
 
       editReportIndex: undefined,
+      checkboxLabel: {
+        on: this.$t('general:label.yes'),
+        off: this.$t('general:label.no'),
+      },
     }
   },
 
